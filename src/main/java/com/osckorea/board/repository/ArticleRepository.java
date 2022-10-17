@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.osckorea.board.entity.Article;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository

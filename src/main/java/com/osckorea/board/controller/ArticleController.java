@@ -12,6 +12,9 @@ import com.osckorea.board.repository.ArticleRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @Slf4j // 로깅을 위한 어노테이션 log를 사용할 수있다.
 public class ArticleController {
@@ -59,6 +62,18 @@ public class ArticleController {
         // 3. 보여줄 페이지 선택
 
         return "articles/show";
+    }
+
+    @GetMapping(value = "/articles")
+    public String getAll(Model model) {
+        // 1. 모든 Articles을 가져온다
+        List<Article> articleEntityList = articleRepository.findAll();
+
+        // 2. 가져온 Article 묶음을 리스트를 뷰로 전달할 때는 모델을 슴 뷰로 전달한다.
+        model.addAttribute("articleList",articleEntityList);
+
+        // 3. 뷰 페이지를 설정
+        return "articles/index";
     }
 
 
