@@ -3,17 +3,11 @@ package com.osckorea.board.api;
 import com.osckorea.board.dto.ArticleDto;
 import com.osckorea.board.entity.Article;
 import com.osckorea.board.service.ArticleService;
-import com.osckorea.board.entity.Article;
-import com.osckorea.board.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.osckorea.board.repository.ArticleRepository;
-
-
 import java.util.List;
 
 @RestController

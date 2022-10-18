@@ -29,7 +29,7 @@ API 명세서
 5. /api/boardsR/{id}
  - method : 'put'
  - Description : 글 수정 기능
-- 
+
 6. /api/boardsD/{id}
  - method : 'delete'
  - Description : 글 삭제 기능
