@@ -11,8 +11,6 @@ import com.osckorea.board.entity.Article;
 import com.osckorea.board.repository.ArticleRepository;
 
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,7 +42,7 @@ public class ArticleController {
          Article saved = articleRepository.save(article);
         log.info(saved.toString());
          //  System.out.println(form.toString());
-        return "";
+        return "redirect:/articles/" + saved.getId();
     }
 
     @GetMapping(value = "/articles/{id}")
@@ -75,6 +73,40 @@ public class ArticleController {
         // 3. 뷰 페이지를 설정
         return "articles/index";
     }
+
+    @GetMapping(value ="articles/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        // view pasge 설정
+        // articles/edit 페이지가 보여짐
+
+        // 1. DB 데이터를 가져온다.(레파지토리에게)
+        Article articlesEntity = articleRepository.findById(id).orElse(null);
+
+        // 2. model에 데이터를 담아서 페이지로 넘긴다
+        model.addAttribute("article", articlesEntity);
+        // 3. 페이지 반환
+        return "articles/edit";
+    }
+
+    @PostMapping(value = "/articles/update")
+    public String update(ArticleDto dto) {
+        log.info(dto.toString());
+        // 1. dto를 entity로 변환한다
+        Article articleEntity = dto.toEntity();
+        log.info(articleEntity.toString());
+
+        // 2. 엔티티를 DB로 저장한다!
+        // 2-1: DB에서 기존 데이터를 가져온다. 대상을 리턴 받아온다
+        // Optional<>을 써도된다
+        Article targetEntity = articleRepository.findById(articleEntity.getId()).orElse(null);
+
+        // 2-2: 기존 데이터가 있다면 값을 변경한다.
+        if (targetEntity != null) {
+            articleRepository.save(articleEntity);
+        }
+        // 3. 수정 결과 페이지로 리다이렉트 한다!
+        return "redirect:/articles";
+   }
 
 
 }

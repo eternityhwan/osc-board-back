@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "*") // 프론트앤드와 통신 CORS 문제 해결
 public class BoardApiController {
 
     @Autowired // DI 생성 객체를 가져와 연결.
@@ -71,17 +72,17 @@ public class BoardApiController {
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
+}
     // 트랜잭션 -- 반드시 성공해야하는 일련의 과정
     // 실패하면 다시 실패한부분으로 돌아올것.
-    @PostMapping(value = "/api/transaction")
-    public ResponseEntity<List<Article>> transactionExample(@RequestBody List<ArticleDto> dtos) {
-        List<Article> creatList = articleService.createArticles(dtos);
-        return (creatList != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(creatList) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-}
+//    @PostMapping(value = "/api/transaction")
+//    public ResponseEntity<List<Article>> transactionExample(@RequestBody List<ArticleDto> dtos) {
+//        List<Article> creatList = articleService.createArticles(dtos);
+//        return (creatList != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(creatList) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//    }
+//}
 
 //    // PATCH
 //    @PatchMapping(value = "/api/board/{id}")
