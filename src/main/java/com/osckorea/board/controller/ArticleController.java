@@ -4,6 +4,7 @@ import com.osckorea.board.dto.ArticleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,8 @@ import com.osckorea.board.entity.Article;
 import com.osckorea.board.repository.ArticleRepository;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 
 @Controller
@@ -108,5 +111,35 @@ public class ArticleController {
         return "redirect:/articles";
    }
 
+   // delete 요청을 html에서 지원을 안함 DeleteMapping 못씀
+    // id는 url에서 가져오는 것.
+   @GetMapping(value = "/articles/{id}/delete")
+   public String delete(@PathVariable Long id, RedirectAttributes rtt) {
+        log.info("삭제요청 들어옴");
+        // RedirectAttributes 클래스
+
+        // 1. 삭제 대상 찾기(가져와야 삭제를 하지)
+       Article deleteArticle = articleRepository.findById(id).orElse(null);
+
+       // 2. 삭제 대상 삭제
+       // 삭제대상이 있으면 삭제한다
+       // 리파지토리야.delete 명령 실행하고 (deleteAricle[대상])을 지워.
+       if (deleteArticle != null) {
+           articleRepository.delete(deleteArticle);
+           rtt.addFlashAttribute("message","삭제 성공");
+           // addFlashAttribute 는 페이지에서 딱 한 번 만 쓸 수 있는 휘발성 데이터 등록됨.
+           // articles 페이지로 리다이렉트 하니까
+           // articles 페이지에
+       }
+
+       // 3. 결과 페이지로 리다이렉트(화이트라벨 페이지 보기 싫음)
+        return "redirect:/articles";
+   }
+
+//   @DeleteMapping(value = "/articles/delete/{id}" )
+//    public void delete() {
+//
+//        return "articles/delete";
+//   }
 
 }
