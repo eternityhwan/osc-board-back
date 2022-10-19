@@ -30,11 +30,11 @@ public class BoardApiController {
     // Get by id
     @GetMapping(value = "/api/boards/{id}")
     public Article search(@PathVariable Long id) {
-
         return articleService.search(id);
     }
 
     // POST
+    // @RequsestBody로 Dto 클래스를 받는다
     @PostMapping(value = "/api/boards/posts")
     public ResponseEntity<Article> post(@RequestBody ArticleDto dto) {
         Article posts = articleService.dbPosts(dto);
@@ -48,14 +48,16 @@ public class BoardApiController {
     public ResponseEntity<Article> update(
             @PathVariable Long id,
             @RequestBody ArticleDto dto) {
-
-        // 서비스에게 update 메소드를 시킨다( id와 dto를 넘겨준다)
-        // updated 라는 객체로 넘겨준다.
+        // 서비스에게 update 메소드를 시킨다(파라메터 id와 dto를 넘겨준다)
+        // updated 객체로 넘겨준다.
+        // Controller는 Controller의 코드만 가지고 있는다.
+        // 뭘 받고 뭘 리턴하는지만 알면 된다.
         Article updated = articleService.revision(id, dto);
         return (updated != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(updated) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
+        // 굿 요청 ResponseEntity 상태 ok를 넣어주고 body에 update 객체를 반환해준다.
+        // 배드 요청 ResponseEntity 상태 bad를 넣고 몸통없이 빌드해서 보여주면된다.
     }
 
     // DELETE

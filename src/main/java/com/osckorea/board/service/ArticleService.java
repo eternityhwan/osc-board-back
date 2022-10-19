@@ -28,7 +28,6 @@ public class ArticleService {
     public List<Article> index() {
         return articleRepository.findAll();
     }
-
     // get id
     public Article search(Long id) {
         return articleRepository.findById(id).orElse(null);
@@ -36,13 +35,15 @@ public class ArticleService {
 
     // post
     public Article dbPosts(ArticleDto dto) {
-        // dto를 받았으면 dto를 entity로 바꾸고
-        // entity로 바꾼 것을 article로 바꾼다
+        // 1. dto를 받았으면 dto를 entity로 바꾸고
+        // 1-1.Entity article 객체로 바꾼다
        Article article = dto.toEntity();
        // article가 null이 아니면 null을 반환해라
+        // 수정이 안되게 아이디가 존재한다면 null을 반환해라 명령
        if (article.getId() != null) {
            return null;
        }
+       // Entity 객체인 article 객체롤 DB에 저장하면된다
        return articleRepository.save(article);
     }
 
@@ -73,14 +74,13 @@ public class ArticleService {
         Article targetEntity = articleRepository.findById(id).orElse(null);
 
         // 1-1 잘못된 요청 처리
-        if (targetEntity != null) {
+        if (targetEntity == null) {
             return null;
         }
 
         // 2. 대상 삭제
         articleRepository.delete(targetEntity);
         return targetEntity;
-
     }
 
     @Transactional // 해당 메소드를 트랜잭션으로 묶는다.
