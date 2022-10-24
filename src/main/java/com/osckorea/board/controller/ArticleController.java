@@ -1,14 +1,13 @@
 package com.osckorea.board.controller;
 
 import com.osckorea.board.dto.ArticleDto;
+import com.osckorea.board.entity.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.osckorea.board.entity.Article;
 import com.osckorea.board.repository.ArticleRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,14 +34,14 @@ public class ArticleController {
         System.out.println(form.toString());
 
         // 1. Dto를 Entity로 변환
-        Article article = form.toEntity();
-        log.info(article.toString());
+        Article articleEntity = form.toEntity();
+        log.info(articleEntity.toString());
         // System.out.println(form.toString());
         // Article 이라는 엔티티 클래스를 사용
         // article 객체에 Dto인 form의 변환 메소드 toEntity() 를 넣음
         
         // 2. Repository에게 Entity를 DB에 저장하게 한다.
-         Article saved = articleRepository.save(article);
+         Article saved = articleRepository.save(articleEntity);
         log.info(saved.toString());
          //  System.out.println(form.toString());
         return "redirect:/articles/" + saved.getId();
@@ -71,7 +70,7 @@ public class ArticleController {
         List<Article> articleEntityList = articleRepository.findAll();
 
         // 2. 가져온 Article 묶음을 리스트를 뷰로 전달할 때는 모델을 슴 뷰로 전달한다.
-        model.addAttribute("articleList",articleEntityList);
+        model.addAttribute("articleList", articleEntityList);
 
         // 3. 뷰 페이지를 설정
         return "articles/index";
@@ -119,13 +118,13 @@ public class ArticleController {
         // RedirectAttributes 클래스
 
         // 1. 삭제 대상 찾기(가져와야 삭제를 하지)
-       Article deleteArticle = articleRepository.findById(id).orElse(null);
+       Article deleteArticleEntity = articleRepository.findById(id).orElse(null);
 
        // 2. 삭제 대상 삭제
        // 삭제대상이 있으면 삭제한다
        // 리파지토리야.delete 명령 실행하고 (deleteAricle[대상])을 지워.
-       if (deleteArticle != null) {
-           articleRepository.delete(deleteArticle);
+       if (deleteArticleEntity != null) {
+           articleRepository.delete(deleteArticleEntity);
            rtt.addFlashAttribute("message","삭제 성공");
            // addFlashAttribute 는 페이지에서 딱 한 번 만 쓸 수 있는 휘발성 데이터 등록됨.
            // articles 페이지로 리다이렉트 하니까

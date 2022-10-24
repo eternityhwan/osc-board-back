@@ -4,10 +4,7 @@ import com.osckorea.board.dto.ArticleDto;
 import com.osckorea.board.entity.Article;
 import com.osckorea.board.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.pool.TypePool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,22 +26,22 @@ public class ArticleService {
         return articleRepository.findAll();
     }
     // get id
-    public Article search(Long id) {
+    public Article findArticle(Long id) {
         return articleRepository.findById(id).orElse(null);
     }
 
     // post
-    public Article dbPosts(ArticleDto dto) {
+    public Article createAricle(ArticleDto dto) {
         // 1. dto를 받았으면 dto를 entity로 바꾸고
         // 1-1.Entity article 객체로 바꾼다
-       Article article = dto.toEntity();
+       Article articleEntity = dto.toEntity();
        // article가 null이 아니면 null을 반환해라
         // 수정이 안되게 아이디가 존재한다면 null을 반환해라 명령
-       if (article.getId() != null) {
+       if (articleEntity.getId() != null) {
            return null;
        }
        // Entity 객체인 article 객체롤 DB에 저장하면된다
-       return articleRepository.save(article);
+       return articleRepository.save(articleEntity);
     }
 
 
@@ -87,12 +84,12 @@ public class ArticleService {
                     // 진행하다 실패하면 메소드가 실행하기 전 상태로 롤백한다.
     public List<Article> createArticles(List<ArticleDto> dtos) {
         // dto 묶음을 entity 묶음으로 변환
-        List<Article> articleList = dtos.stream()
+        List<Article> articleEntityList = dtos.stream()
                 .map(dto -> dto.toEntity())
                 .collect(Collectors.toList());
 
         // entity 묶음을 DB로 저장
-        articleList.stream()
+        articleEntityList.stream()
                 // forEach 하나하나 반복한다
                 .forEach(article -> articleRepository.save(article));
 

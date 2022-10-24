@@ -1,11 +1,9 @@
 package com.osckorea.board.repository;
 
+import com.osckorea.board.entity.Article;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.osckorea.board.entity.Article;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository

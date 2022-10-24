@@ -1,9 +1,6 @@
 package com.osckorea.board.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Getter
+//@Table(name = "Article")
 public class Article {
 
     @Id // 대표값을 지정 고유의 값
@@ -28,10 +26,10 @@ public class Article {
     private String content;
 
 
-    public void patch(Article article) {
-        if ( article.title != null)
-            this.title = article.title;
-        if (article.content != null)
-            this.content = article.content;
+    public void patch(Article articleEntity) {
+        if ( articleEntity.title != null)
+            this.title = articleEntity.title;
+        if (articleEntity.content != null)
+            this.content = articleEntity.content;
         }
     }

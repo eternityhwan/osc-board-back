@@ -29,15 +29,15 @@ public class BoardApiController {
 
     // Get by id
     @GetMapping(value = "/api/boards/{id}")
-    public Article search(@PathVariable Long id) {
-        return articleService.search(id);
+    public Article findArticle(@PathVariable Long id) {
+        return articleService.findArticle(id);
     }
 
     // POST
     // @RequsestBody로 Dto 클래스를 받는다
     @PostMapping(value = "/api/boards/posts")
-    public ResponseEntity<Article> post(@RequestBody ArticleDto dto) {
-        Article posts = articleService.dbPosts(dto);
+    public ResponseEntity<Article> createAricle(@RequestBody ArticleDto dto) {
+        Article posts = articleService.createAricle(dto);
         return (posts != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(posts) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
